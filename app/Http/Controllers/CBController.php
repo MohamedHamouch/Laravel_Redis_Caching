@@ -40,6 +40,6 @@ class CBController extends Controller
         // Clear the cache
         // Cache::forget('users');
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('cb.index')->with('success', 'User created successfully.');
     }
 }
