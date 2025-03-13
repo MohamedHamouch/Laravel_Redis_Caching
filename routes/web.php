@@ -3,17 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\CBController;
+use App\Models\User;
 
 Route::get('/', function () {
 
-    // Store a value in the cache
-    // Cache for 10 seconds
-    Cache::put('test_key', 'test_value', 10);
+    $cachedValue = Cache::remember('count', 20, function(){
+        return User::count();
+    });
 
-    // Retrieve the value from the cache
-    $value = Cache::get('test_key');
+    $total  = User::count();
+    return '<h1>cached total is :' . $cachedValue . '</br>real total is :' . $total. '</h1>';
 
-    return $value;
+    
+
 });
 
 Route::prefix('cb')->name('cb.')->group(function () {
