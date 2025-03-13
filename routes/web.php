@@ -16,7 +16,7 @@ Route::get('/', function () {
     return $value;
 });
 
-Route::prefix('users')->name('users.')->group(function () {
+Route::prefix('cb')->name('cb.')->group(function () {
     Route::get('/', [CBController::class, 'index'])->name('index');
     Route::get('/create', [CBController::class, 'create'])->name('create');
     Route::post('/', [CBController::class, 'store'])->name('store');
