@@ -29,7 +29,7 @@ class CBController extends Controller
             'image' => 'required|image|max:2048',
         ]);
 
-        $imagePath = $request->file('image')->store('public/images');
+        $imagePath = $request->file('image')->store('images', 'public');
         
         $user = User::create([
             'name' => $request->name,
@@ -37,8 +37,8 @@ class CBController extends Controller
             'image' => $imagePath,
         ]);
 
-        // Clear the cache
-        // Cache::forget('users');
+        // Clear cache
+        Cache::forget('users');
 
         return redirect()->route('cb.index')->with('success', 'User created successfully.');
     }
