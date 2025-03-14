@@ -3,20 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\CBController;
+use Illuminate\Support\Facades\Redis;
 use App\Models\User;
-
 Route::get('/', function () {
 
-    $cachedValue = Cache::remember('count', 20, function(){
+    $count = Cache::remember('count', 30, function(){
         return User::count();
     });
 
-    $total  = User::count();
-    return '<h1>cached total is :' . $cachedValue . '</br>real total is :' . $total. '</h1>';
+    $liveCount = User::count();
+    return "<h1>Cached count: $count </br>Live count: $liveCount</h1>";
 
-    
 
-});
+})->name('home');
+
 
 Route::prefix('cb')->name('cb.')->group(function () {
     Route::get('/', [CBController::class, 'index'])->name('index');
@@ -24,3 +24,11 @@ Route::prefix('cb')->name('cb.')->group(function () {
     Route::post('/', [CBController::class, 'store'])->name('store');
 });
 
+Route::get('/add', function () {
+    User::create([
+        'name' => 'Test',
+        'role' => 'Test',
+        'image' => 'Test',
+    ]);
+    return redirect()->route('home');
+});
