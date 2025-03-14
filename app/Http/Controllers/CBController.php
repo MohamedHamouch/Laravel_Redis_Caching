@@ -10,7 +10,10 @@ class CBController extends Controller
 {
     public function index()
     {
-        $users = Cache::remember('users', 60, function () {
+
+        Cache::forget('users');
+
+        $users = Cache::remember('users', 600, function () {
             return User::all();
         });
 
@@ -38,7 +41,6 @@ class CBController extends Controller
         ]);
 
         // Clear cache
-        Cache::forget('users');
 
         return redirect()->route('cb.index')->with('success', 'User created successfully.');
     }
